@@ -46,17 +46,6 @@ class optimizer:
         # Call specific optimizer step method (SGD, Adam, etc.)
         self._apply_update(model, grad_wrt_weights, grad_wrt_biases)
 
-    def _apply_update(self, model, grad_wrt_weights, grad_wrt_biases):
-        """
-        Applies weight updates using specific optimization algorithm (implemented in subclass).
-        
-        :param model: The neural network model.
-        :param grad_wrt_weights: Gradients with respect to the weights.
-        :param grad_wrt_biases: Gradients with respect to the biases.
-        """
-        raise NotImplementedError("Must be implemented in subclass.")
-
-
 # SGD Optimizer (Stochastic Gradient Descent)
 class SGD(optimizer):
     def __init__(self, lr=0.001, weight_decay=0.0001):
@@ -66,7 +55,7 @@ class SGD(optimizer):
         super().__init__(lr, weight_decay=weight_decay)
     
     def step(self, model, X, y, batch_size):
-        grad_wrt_weights, grad_wrt_biases, output = super().step(model, X, y, batch_size)
+        grad_wrt_weights, grad_wrt_biases = model.backward(X,y)
         
         # Update weights and biases using SGD
         for i in range(len(model.weights)):
@@ -102,22 +91,20 @@ class Momentum(SGD):
 # Nesterov Accelerated Gradient Optimizer (NAG)
 class Nesterov(Momentum):
     def __init__(self, lr=0.001, momentum=0.9, weight_decay=0.0001):
-        """
-        Inherits from Momentum and implements Nesterov Accelerated Gradient (NAG).
-        """
         super().__init__(lr=lr, momentum=momentum, weight_decay=weight_decay)
 
     def step(self, model, X, y, batch_size):
-        grad_wrt_weights, grad_wrt_biases, output = super().step(model, X, y, batch_size)
-        
-        # Compute Nesterov update (use previous momentum term)
-        prev_m = [m.copy() for m in self.m]
-        self.m = [self.m[i] * self.momentum + grad_wrt_weights[i] for i in range(len(self.m))]
-        
-        # Update weights and biases using Nesterov Accelerated Gradient
+        grad_wrt_weights, grad_wrt_biases = model.backward(X, y)
+
+        if self.m is None:
+            self.m = [np.zeros_like(w) for w in model.weights]
+
+        # Compute Nesterov update
         for i in range(len(model.weights)):
-            model.weights[i] -= self.lr * self.m[i]
-            model.biases[i] -= self.lr * grad_wrt_biases[i]
+            prev_m = self.m[i].copy()
+            self.m[i] = self.momentum * self.m[i] + self.lr * grad_wrt_weights[i] / batch_size
+            model.weights[i] -= self.momentum * prev_m + (1 + self.momentum) * self.m[i]
+            model.biases[i] -= self.lr * grad_wrt_biases[i] / batch_size
 
 
 # RMSProp Optimizer
@@ -178,21 +165,30 @@ class Adam(optimizer):
 
 
 # Nadam Optimizer (Nesterov + Adam)
-class Nadam(Adam, Nesterov):
+class Nadam(Adam):
     def __init__(self, lr=0.001, beta1=0.9, beta2=0.999, momentum=0.9, epsilon=1e-8, weight_decay=0.0001):
-        """
-        Nadam combines Nesterov momentum with Adam optimization.
-        """
-        Adam.__init__(self, lr=lr, beta1=beta1, beta2=beta2, epsilon=epsilon, weight_decay=weight_decay)
-        Nesterov.__init__(self, lr=lr, momentum=momentum, weight_decay=weight_decay)
+        super().__init__(lr=lr, beta1=beta1, beta2=beta2, epsilon=epsilon, weight_decay=weight_decay)
+        self.momentum = momentum
 
     def step(self, model, X, y, batch_size):
-        grad_wrt_weights, grad_wrt_biases, output = super().step(model, X, y, batch_size)
-        
-        # Nadam updates the weights using both Adam and Nesterov methods
-        self.momentum = self.momentum * (1 - self.beta1 ** self.t) + self.momentum
+        grad_wrt_weights, grad_wrt_biases = model.backward(X, y)
+
+        if self.m is None:
+            self.m = [np.zeros_like(w) for w in model.weights]
+            self.v = [np.zeros_like(w) for w in model.weights]
+
+        self.t += 1
 
         for i in range(len(model.weights)):
-            model.weights[i] -= self.lr * self.momentum
-            model.biases[i] -= self.lr * grad_wrt_biases[i]
+            self.m[i] = self.beta1 * self.m[i] + (1 - self.beta1) * grad_wrt_weights[i]
+            self.v[i] = self.beta2 * self.v[i] + (1 - self.beta2) * (grad_wrt_weights[i] ** 2)
+
+            # Bias correction
+            m_hat = self.m[i] / (1 - self.beta1 ** self.t)
+            v_hat = self.v[i] / (1 - self.beta2 ** self.t)
+
+            # Nadam momentum correction
+            nesterov_term = self.momentum * self.m[i]
+            model.weights[i] -= self.lr * (nesterov_term + (1 - self.beta1) * m_hat) / (np.sqrt(v_hat) + self.epsilon)
+            model.biases[i] -= self.lr * grad_wrt_biases[i] / batch_size
 

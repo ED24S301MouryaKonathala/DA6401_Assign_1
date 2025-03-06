@@ -9,10 +9,38 @@ class FeedforwardNN:
         self.biases = []
         self.activations = []
         self.z = []
-        self.dz = []
 
-        # Initializing weights and biases for layers
+        # Initialize weights properly
         self._initialize_weights(input_size, hidden_size, output_size, weight_init)
+
+def _initialize_weights(self, input_size, hidden_size, output_size, weight_init):
+    np.random.seed(42)  # Ensures reproducibility
+
+    if weight_init == 'random':
+        self.weights.append(np.random.randn(input_size, hidden_size) * 0.01)
+    elif weight_init == 'Xavier':
+        self.weights.append(np.random.randn(input_size, hidden_size) * np.sqrt(1.0 / input_size))
+    elif weight_init == 'He':
+        self.weights.append(np.random.randn(input_size, hidden_size) * np.sqrt(2.0 / input_size))  # Added He initialization
+    self.biases.append(np.zeros((1, hidden_size)))
+
+    for _ in range(self.num_layers - 1):
+        if weight_init == 'random':
+            self.weights.append(np.random.randn(hidden_size, hidden_size) * 0.01)
+        elif weight_init == 'Xavier':
+            self.weights.append(np.random.randn(hidden_size, hidden_size) * np.sqrt(1.0 / hidden_size))
+        elif weight_init == 'He':
+            self.weights.append(np.random.randn(hidden_size, hidden_size) * np.sqrt(2.0 / hidden_size))  # Added He initialization
+        self.biases.append(np.zeros((1, hidden_size)))
+
+    if weight_init == 'random':
+        self.weights.append(np.random.randn(hidden_size, output_size) * 0.01)
+    elif weight_init == 'Xavier':
+        self.weights.append(np.random.randn(hidden_size, output_size) * np.sqrt(1.0 / hidden_size))
+    elif weight_init == 'He':
+        self.weights.append(np.random.randn(hidden_size, output_size) * np.sqrt(2.0 / hidden_size))  # Added He initialization
+    self.biases.append(np.zeros((1, output_size)))
+
 
     def _activation(self, z):
         if self.activation == 'sigmoid':
@@ -23,7 +51,7 @@ class FeedforwardNN:
             return np.tanh(z)
         elif self.activation == 'identity':
             return z
-        
+    
     def activation_derivative(self, z):
         if self.activation == 'sigmoid':
             return self._activation(z) * (1 - self._activation(z))
@@ -33,73 +61,40 @@ class FeedforwardNN:
             return 1 - np.tanh(z) ** 2
         elif self.activation == 'identity':
             return np.ones_like(z)
-
+    
     def _softmax(self, z):
-        exp_z = np.exp(z - np.max(z, axis=1, keepdims=True))  # For numerical stability
+        exp_z = np.exp(z - np.max(z, axis=1, keepdims=True))
         return exp_z / np.sum(exp_z, axis=1, keepdims=True)
 
-    def _initialize_weights(self, input_size, hidden_size, output_size, weight_init):
-        if weight_init == 'random':
-            self.weights.append(np.random.randn(input_size, hidden_size))
-            self.biases.append(np.zeros((1, hidden_size)))
-            for _ in range(self.num_layers - 1):
-                self.weights.append(np.random.randn(hidden_size, hidden_size))
-                self.biases.append(np.zeros((1, hidden_size)))
-            self.weights.append(np.random.randn(hidden_size, output_size))
-            self.biases.append(np.zeros((1, output_size)))
-
-        # Xavier normal initialization (Gaussian Dist)
-        elif weight_init == 'Xavier':
-            self.weights.append(np.random.randn(input_size, hidden_size) * np.sqrt(2.0 / input_size))
-            self.biases.append(np.zeros((1, hidden_size)))
-            for _ in range(self.num_layers - 1):
-                self.weights.append(np.random.randn(hidden_size, hidden_size) * np.sqrt(2.0 / hidden_size))
-                self.biases.append(np.zeros((1, hidden_size)))
-            self.weights.append(np.random.randn(hidden_size, output_size) * np.sqrt(2.0 / hidden_size))
-            self.biases.append(np.zeros((1, output_size)))
-
     def forward(self, X):
-        self.activations = [X]  # Input activations
-        self.z = []  # List to store pre-activation values
+        self.activations = [X]
+        self.z = []
         
-        # Forward pass through hidden layers
-        for i in range(self.num_layers - 1):  # Last layer is output layer, we process only hidden layers
+        for i in range(self.num_layers):
             z = np.dot(self.activations[i], self.weights[i]) + self.biases[i]
             self.z.append(z)
-            a = self._activation(z)
-            self.activations.append(a)
+            self.activations.append(self._activation(z))
         
-        # Output layer
         z_out = np.dot(self.activations[-1], self.weights[-1]) + self.biases[-1]
         self.z.append(z_out)
-        output = self._softmax(z_out)
-        return output
+        return self._softmax(z_out)
 
-    def compute_loss(self, output, y):
-        """Compute the cross-entropy loss for classification."""
-        # Assuming one-hot encoded labels
+    def compute_loss(self, output, y, loss_type='cross_entropy'):
         m = y.shape[0]
-        log_likelihood = -np.log(output[range(m), np.argmax(y, axis=1)] + 1e-8)
-        return np.sum(log_likelihood) / m
+        if loss_type == 'cross_entropy':
+            log_likelihood = -np.log(output[range(m), np.argmax(y, axis=1)] + 1e-8)
+            return np.sum(log_likelihood) / m
+        elif loss_type == 'mean_squared_error':
+            return np.mean((output - y) ** 2)
 
     def backward(self, X, y):
-        """Backward pass for backpropagation."""
-        m = X.shape[0]  # Batch size
-
-        # Compute the gradient of the loss with respect to the output
-        grad_wrt_output = self.activations[-1] - y  # Assuming softmax output
-        grad_wrt_output /= m  # Normalize gradients by batch size
-
+        grad_wrt_output = self.activations[-1] - y
         grad_wrt_weights = []
         grad_wrt_biases = []
-
-        # Backpropagation through layers
+        
         for i in range(self.num_layers, 0, -1):
             grad_wrt_weights.insert(0, np.dot(self.activations[i-1].T, grad_wrt_output))
             grad_wrt_biases.insert(0, np.sum(grad_wrt_output, axis=0, keepdims=True))
-
-            # Backpropagate the gradient to the previous layer
             if i > 1:
                 grad_wrt_output = np.dot(grad_wrt_output, self.weights[i-1].T) * self.activation_derivative(self.z[i-2])
-
         return grad_wrt_weights, grad_wrt_biases
