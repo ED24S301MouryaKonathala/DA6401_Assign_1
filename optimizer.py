@@ -21,30 +21,27 @@ class optimizer:
         self.s = None  # Moving average of squared gradients (for Nadam)
 
     def step(self, model, X, y, batch_size):
-        """
-        Performs a single optimization step (forward and backward pass, and weight update).
-        
-        :param model: The neural network model.
-        :param X: The input batch of data.
-        :param y: The true labels for the batch.
-        :param batch_size: The size of the current batch.
-        """
+        """Performs a single optimization step."""
         # Forward pass
         output = model.forward(X)
         
-        # Backward pass to calculate gradients
+        # Backward pass
         grad_wrt_weights, grad_wrt_biases = model.backward(X, y)
         
-        # Apply L2 weight decay (regularization)
+        # Apply L2 weight decay and normalize gradients
         for i in range(len(model.weights)):
-            grad_wrt_weights[i] += self.weight_decay * model.weights[i]
+            grad_wrt_weights[i] = grad_wrt_weights[i] / batch_size + self.weight_decay * model.weights[i]
+            grad_wrt_biases[i] = grad_wrt_biases[i] / batch_size
         
-        # Normalize gradients by batch size
-        grad_wrt_weights = [g / batch_size for g in grad_wrt_weights]
-        grad_wrt_biases = [g / batch_size for g in grad_wrt_biases]
-        
-        # Call specific optimizer step method (SGD, Adam, etc.)
+        # Apply updates
         self._apply_update(model, grad_wrt_weights, grad_wrt_biases)
+        return output, grad_wrt_weights, grad_wrt_biases
+
+    def _apply_update(self, model, grad_wrt_weights, grad_wrt_biases):
+        for i in range(len(model.weights)):
+            model.weights[i] -= self.lr * grad_wrt_weights[i]
+            model.biases[i] -= self.lr * grad_wrt_biases[i]
+
 
 # SGD Optimizer (Stochastic Gradient Descent)
 class SGD(optimizer):
@@ -55,12 +52,7 @@ class SGD(optimizer):
         super().__init__(lr, weight_decay=weight_decay)
     
     def step(self, model, X, y, batch_size):
-        grad_wrt_weights, grad_wrt_biases = model.backward(X,y)
-        
-        # Update weights and biases using SGD
-        for i in range(len(model.weights)):
-            model.weights[i] -= self.lr * grad_wrt_weights[i]
-            model.biases[i] -= self.lr * grad_wrt_biases[i]
+        super().step(model, X, y, batch_size)
 
 
 # Momentum Optimizer
@@ -73,19 +65,23 @@ class Momentum(SGD):
         self.momentum = momentum
 
     def step(self, model, X, y, batch_size):
-        grad_wrt_weights, grad_wrt_biases, output = super().step(model, X, y, batch_size)
+        # Forward pass
+        output = model.forward(X)
+        
+        # Backward pass
+        grad_wrt_weights, grad_wrt_biases = model.backward(X, y)
         
         # Initialize momentum if it is None
         if self.m is None:
             self.m = [np.zeros_like(w) for w in model.weights]
         
-        # Update momentum
-        self.m = [self.m[i] * self.momentum + grad_wrt_weights[i] for i in range(len(self.m))]
-        
-        # Update weights and biases using momentum
+        # Update momentum and apply gradients
         for i in range(len(model.weights)):
+            self.m[i] = self.momentum * self.m[i] + grad_wrt_weights[i] / batch_size
             model.weights[i] -= self.lr * self.m[i]
-            model.biases[i] -= self.lr * grad_wrt_biases[i]
+            model.biases[i] -= self.lr * grad_wrt_biases[i] / batch_size
+        
+        return output
 
 
 # Nesterov Accelerated Gradient Optimizer (NAG)
@@ -117,7 +113,7 @@ class RMSProp(optimizer):
         self.s = None
 
     def step(self, model, X, y, batch_size):
-        grad_wrt_weights, grad_wrt_biases, output = super().step(model, X, y, batch_size)
+        output, grad_wrt_weights, grad_wrt_biases = super().step(model, X, y, batch_size)
         
         # Initialize squared gradient moving average if None
         if self.s is None:
@@ -128,6 +124,7 @@ class RMSProp(optimizer):
             self.s[i] = self.beta * self.s[i] + (1 - self.beta) * (grad_wrt_weights[i] ** 2)
             model.weights[i] -= self.lr * grad_wrt_weights[i] / (np.sqrt(self.s[i]) + self.epsilon)
             model.biases[i] -= self.lr * grad_wrt_biases[i]
+        return output
 
 
 # Adam Optimizer
@@ -141,7 +138,7 @@ class Adam(optimizer):
         self.v = None  # Second moment vector
 
     def step(self, model, X, y, batch_size):
-        grad_wrt_weights, grad_wrt_biases, output = super().step(model, X, y, batch_size)
+        output, grad_wrt_weights, grad_wrt_biases = super().step(model, X, y, batch_size)
         
         # Initialize first moment (m) and second moment (v) if None
         if self.m is None:
@@ -162,6 +159,7 @@ class Adam(optimizer):
             model.biases[i] -= self.lr * grad_wrt_biases[i]
 
         self.t += 1  # Increment timestep
+        return output
 
 
 # Nadam Optimizer (Nesterov + Adam)
