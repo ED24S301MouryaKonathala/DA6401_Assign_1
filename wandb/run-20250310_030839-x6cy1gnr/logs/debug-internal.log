@@ -1,0 +1,16 @@
+{"time":"2025-03-10T03:08:39.1646974+05:30","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"C:\\Mourya Files\\Deep Learning\\Assign 1\\DA6401_Assign1\\wandb\\run-20250310_030839-x6cy1gnr\\logs\\debug-core.log"}
+{"time":"2025-03-10T03:08:39.2735012+05:30","level":"INFO","msg":"created new stream","id":"x6cy1gnr"}
+{"time":"2025-03-10T03:08:39.2735012+05:30","level":"INFO","msg":"stream: started","id":"x6cy1gnr"}
+{"time":"2025-03-10T03:08:39.2735012+05:30","level":"INFO","msg":"writer: Do: started","stream_id":"x6cy1gnr"}
+{"time":"2025-03-10T03:08:39.2741839+05:30","level":"INFO","msg":"sender: started","stream_id":"x6cy1gnr"}
+{"time":"2025-03-10T03:08:39.2741839+05:30","level":"INFO","msg":"handler: started","stream_id":"x6cy1gnr"}
+{"time":"2025-03-10T03:08:39.6037916+05:30","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-10T03:14:52.0498741+05:30","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-10T03:14:52.0503772+05:30","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-10T03:14:53.0589934+05:30","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading output.log","runtime_seconds":0.3389367,"progress":"605B/605B"},{"desc":"uploading wandb-summary.json","runtime_seconds":0.3389367,"progress":"482B/482B"},{"desc":"uploading config.yaml","runtime_seconds":0.085871,"progress":"1.1KB/1.1KB"}],"total_operations":3}}
+{"time":"2025-03-10T03:14:54.1330632+05:30","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-10T03:14:54.4634093+05:30","level":"INFO","msg":"stream: closing","id":"x6cy1gnr"}
+{"time":"2025-03-10T03:14:54.4634093+05:30","level":"INFO","msg":"handler: closed","stream_id":"x6cy1gnr"}
+{"time":"2025-03-10T03:14:54.4634093+05:30","level":"INFO","msg":"writer: Close: closed","stream_id":"x6cy1gnr"}
+{"time":"2025-03-10T03:14:54.4634093+05:30","level":"INFO","msg":"sender: closed","stream_id":"x6cy1gnr"}
+{"time":"2025-03-10T03:14:54.4634093+05:30","level":"INFO","msg":"stream: closed","id":"x6cy1gnr"}

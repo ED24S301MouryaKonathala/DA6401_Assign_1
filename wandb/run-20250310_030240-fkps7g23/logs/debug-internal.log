@@ -1,0 +1,16 @@
+{"time":"2025-03-10T03:02:40.6275195+05:30","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"C:\\Mourya Files\\Deep Learning\\Assign 1\\DA6401_Assign1\\wandb\\run-20250310_030240-fkps7g23\\logs\\debug-core.log"}
+{"time":"2025-03-10T03:02:40.7360956+05:30","level":"INFO","msg":"created new stream","id":"fkps7g23"}
+{"time":"2025-03-10T03:02:40.7360956+05:30","level":"INFO","msg":"stream: started","id":"fkps7g23"}
+{"time":"2025-03-10T03:02:40.7360956+05:30","level":"INFO","msg":"writer: Do: started","stream_id":"fkps7g23"}
+{"time":"2025-03-10T03:02:40.7360956+05:30","level":"INFO","msg":"sender: started","stream_id":"fkps7g23"}
+{"time":"2025-03-10T03:02:40.7360956+05:30","level":"INFO","msg":"handler: started","stream_id":"fkps7g23"}
+{"time":"2025-03-10T03:02:41.0645983+05:30","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-10T03:04:06.676807+05:30","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-10T03:04:06.6773111+05:30","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-10T03:04:07.6859488+05:30","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading output.log","runtime_seconds":0.4180419,"progress":"196B/196B"},{"desc":"uploading config.yaml","runtime_seconds":0.1337417,"progress":"1.1KB/1.1KB"}],"total_operations":2}}
+{"time":"2025-03-10T03:04:08.5725645+05:30","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-10T03:04:08.8966152+05:30","level":"INFO","msg":"stream: closing","id":"fkps7g23"}
+{"time":"2025-03-10T03:04:08.8966152+05:30","level":"INFO","msg":"handler: closed","stream_id":"fkps7g23"}
+{"time":"2025-03-10T03:04:08.8966152+05:30","level":"INFO","msg":"writer: Close: closed","stream_id":"fkps7g23"}
+{"time":"2025-03-10T03:04:08.8971774+05:30","level":"INFO","msg":"sender: closed","stream_id":"fkps7g23"}
+{"time":"2025-03-10T03:04:08.8971774+05:30","level":"INFO","msg":"stream: closed","id":"fkps7g23"}

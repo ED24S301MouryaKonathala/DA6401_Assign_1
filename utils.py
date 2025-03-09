@@ -20,4 +20,4 @@ def plot_samples_per_class(x_train, y_train):
         plt.imshow(x_train[np.random.choice(np.where(y_train == i)[0])].reshape(28, 28), cmap='gray')
         plt.title(class_names[i])
         plt.axis('off')
-    plt.show()
+    plt.tight_layout()

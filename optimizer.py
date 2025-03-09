@@ -2,11 +2,10 @@ import numpy as np
 
 # Base Optimizer class
 class optimizer:
-    def __init__(self, lr=0.001, momentum=0.9, beta=0.9, beta1=0.9, beta2=0.99, epsilon=1e-8, weight_decay=0.0001):
-        """
-        Initializes the optimizer with the learning rate, momentum, beta values, epsilon (for numerical stability),
-        weight decay (for regularization), and other optimizer parameters.
-        """
+    def __init__(self, lr=0.001, momentum=0.9, beta=0.9, beta1=0.9, beta2=0.999, epsilon=1e-8, weight_decay=0.0001):
+
+       # Initialize the optimizer with the learning rate, momentum, beta values, epsilon,weight decay (for regularization), and other optimizer parameters.
+       
         self.lr = lr
         self.momentum = momentum
         self.beta = beta
@@ -21,12 +20,13 @@ class optimizer:
         self.s = None  # Moving average of squared gradients (for Nadam)
 
     def step(self, model, X, y, batch_size):
-        """Performs a single optimization step."""
+        # Performs a single optimization step, given a batch of data.
+
         # Forward pass
         output = model.forward(X)
         
         # Backward pass
-        grad_wrt_weights, grad_wrt_biases = model.backward(X, y)
+        grad_wrt_weights, grad_wrt_biases = model.backward(y)
         
         # Apply L2 weight decay and normalize gradients
         for i in range(len(model.weights)):
@@ -46,9 +46,6 @@ class optimizer:
 # SGD Optimizer (Stochastic Gradient Descent)
 class SGD(optimizer):
     def __init__(self, lr=0.001, weight_decay=0.0001):
-        """
-        Initializes the SGD optimizer, which optionally includes momentum.
-        """
         super().__init__(lr, weight_decay=weight_decay)
     
     def step(self, model, X, y, batch_size):
@@ -69,7 +66,7 @@ class Momentum(SGD):
         output = model.forward(X)
         
         # Backward pass
-        grad_wrt_weights, grad_wrt_biases = model.backward(X, y)
+        grad_wrt_weights, grad_wrt_biases = model.backward(y)
         
         # Initialize momentum if it is None
         if self.m is None:
@@ -90,7 +87,7 @@ class Nesterov(Momentum):
         super().__init__(lr=lr, momentum=momentum, weight_decay=weight_decay)
 
     def step(self, model, X, y, batch_size):
-        grad_wrt_weights, grad_wrt_biases = model.backward(X, y)
+        grad_wrt_weights, grad_wrt_biases = model.backward(y)
 
         if self.m is None:
             self.m = [np.zeros_like(w) for w in model.weights]
@@ -169,7 +166,7 @@ class Nadam(Adam):
         self.momentum = momentum
 
     def step(self, model, X, y, batch_size):
-        grad_wrt_weights, grad_wrt_biases = model.backward(X, y)
+        grad_wrt_weights, grad_wrt_biases = model.backward(y)
 
         if self.m is None:
             self.m = [np.zeros_like(w) for w in model.weights]

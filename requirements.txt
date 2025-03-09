@@ -1,4 +1,7 @@
-numpy
-matplotlib
-keras
-wandb
+numpy>=1.19.2
+matplotlib>=3.3.2
+keras>=2.4.3
+wandb>=0.13.0
+seaborn>=0.11.0
+scikit-learn>=0.23.2
+tensorflow>=2.4.0

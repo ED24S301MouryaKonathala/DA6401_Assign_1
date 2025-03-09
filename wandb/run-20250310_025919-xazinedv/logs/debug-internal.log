@@ -1,0 +1,16 @@
+{"time":"2025-03-10T02:59:19.9366393+05:30","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"C:\\Mourya Files\\Deep Learning\\Assign 1\\DA6401_Assign1\\wandb\\run-20250310_025919-xazinedv\\logs\\debug-core.log"}
+{"time":"2025-03-10T02:59:20.0450909+05:30","level":"INFO","msg":"created new stream","id":"xazinedv"}
+{"time":"2025-03-10T02:59:20.0450909+05:30","level":"INFO","msg":"stream: started","id":"xazinedv"}
+{"time":"2025-03-10T02:59:20.0450909+05:30","level":"INFO","msg":"writer: Do: started","stream_id":"xazinedv"}
+{"time":"2025-03-10T02:59:20.0450909+05:30","level":"INFO","msg":"sender: started","stream_id":"xazinedv"}
+{"time":"2025-03-10T02:59:20.0450909+05:30","level":"INFO","msg":"handler: started","stream_id":"xazinedv"}
+{"time":"2025-03-10T02:59:20.3744312+05:30","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-03-10T03:02:33.5599827+05:30","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-03-10T03:02:33.5604862+05:30","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-03-10T03:02:34.5884457+05:30","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading wandb-summary.json","runtime_seconds":0.4505961,"progress":"482B/482B"},{"desc":"uploading config.yaml","runtime_seconds":0.141469,"progress":"1.1KB/1.1KB"}],"total_operations":2}}
+{"time":"2025-03-10T03:02:35.4110562+05:30","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-03-10T03:02:35.7380387+05:30","level":"INFO","msg":"stream: closing","id":"xazinedv"}
+{"time":"2025-03-10T03:02:35.7380387+05:30","level":"INFO","msg":"handler: closed","stream_id":"xazinedv"}
+{"time":"2025-03-10T03:02:35.7380387+05:30","level":"INFO","msg":"writer: Close: closed","stream_id":"xazinedv"}
+{"time":"2025-03-10T03:02:35.7380387+05:30","level":"INFO","msg":"sender: closed","stream_id":"xazinedv"}
+{"time":"2025-03-10T03:02:35.7380387+05:30","level":"INFO","msg":"stream: closed","id":"xazinedv"}
