@@ -1,7 +1,0 @@
-{"time":"2025-03-10T03:38:36.4594936+05:30","level":"INFO","msg":"stream: starting","core version":"0.19.8","symlink path":"C:\\Mourya Files\\Deep Learning\\Assign 1\\DA6401_Assign1\\wandb\\run-20250310_033836-4a1wrey6\\logs\\debug-core.log"}
-{"time":"2025-03-10T03:38:36.5674183+05:30","level":"INFO","msg":"created new stream","id":"4a1wrey6"}
-{"time":"2025-03-10T03:38:36.5674183+05:30","level":"INFO","msg":"stream: started","id":"4a1wrey6"}
-{"time":"2025-03-10T03:38:36.5679284+05:30","level":"INFO","msg":"handler: started","stream_id":"4a1wrey6"}
-{"time":"2025-03-10T03:38:36.5679284+05:30","level":"INFO","msg":"sender: started","stream_id":"4a1wrey6"}
-{"time":"2025-03-10T03:38:36.5679284+05:30","level":"INFO","msg":"writer: Do: started","stream_id":"4a1wrey6"}
-{"time":"2025-03-10T03:38:36.8738446+05:30","level":"INFO","msg":"Starting system monitor"}
