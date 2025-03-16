@@ -1,3 +1,5 @@
+# All the files can be found in Master branch
+
 # Fashion MNIST Neural Network
 
 This project implements a feedforward neural network for classifying Fashion MNIST images using various optimizers and architectures.
