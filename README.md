@@ -1,5 +1,7 @@
 # All the files can be found in Master branch
 
+## [Wandb Report Link](https://wandb.ai/mourya001-indian-institute-of-technology-madras/Assignment_1/reports/DA6401-Assignment-1--VmlldzoxMTgxOTA4MQ?accessToken=tws4gkiyn7erv0shjbaiocogsgaebhmyfv8s0j47zvdw017dpygw6strebs5azfy)
+
 # Fashion MNIST Neural Network
 
 This project implements a feedforward neural network for classifying Fashion MNIST images using various optimizers and architectures.
@@ -134,4 +136,4 @@ python train.py -d fashion_mnist -e 10 -b 32 -o nadam -lr 0.001 -nhl 4 -sz 128 -
 - All metrics and visualizations are automatically logged to Weights & Biases
 - Confusion matrix shows per-class performance
 - Loss curves help analyze training convergence
-- Model architecture is optimized for Fashion MNIST classification
+
