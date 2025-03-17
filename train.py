@@ -159,6 +159,8 @@ def train_model(config=None):
             # Log metrics
             wandb.log({
                 'epoch': epoch + 1,
+                'train_loss': avg_train_loss,
+                'val_loss': val_loss,
                 'train_accuracy': train_acc / n_batches,
                 'validation_accuracy': val_accuracy
             })
