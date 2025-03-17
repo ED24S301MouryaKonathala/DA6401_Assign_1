@@ -2,6 +2,20 @@
 
 This project implements a feedforward neural network for classifying Fashion MNIST images using various optimizers and architectures.
 
+## [Wandb Report Link](https://wandb.ai/mourya001-indian-institute-of-technology-madras/Assignment_1/reports/DA6401-Assignment-1--VmlldzoxMTgxOTA4MQ?accessToken=tws4gkiyn7erv0shjbaiocogsgaebhmyfv8s0j47zvdw017dpygw6strebs5azfy)
+
+## Project Structure
+
+```
+.
+├── model.py           # Neural network implementation
+├── optimizer.py       # Optimization algorithms
+├── train.py          # Training script
+├── utils.py          # Utility functions
+├── wandb_sweep.py    # Hyperparameter optimization
+└── requirements.txt   # Project dependencies
+```
+
 ## Setup
 
 1. Create a virtual environment:
@@ -31,7 +45,12 @@ wandb login
 ## Training
 
 ### Single Model Training
+Train a model with best parameters:
 
+```bash
+python train.py
+
+```
 Train a model with specific parameters:
 
 ```bash
@@ -101,17 +120,7 @@ Access visualizations in:
    - Confusion matrix
    - Sample predictions
 
-## Project Structure
 
-```
-.
-├── model.py           # Neural network implementation
-├── optimizer.py       # Optimization algorithms
-├── train.py          # Training script
-├── utils.py          # Utility functions
-├── wandb_sweep.py    # Hyperparameter optimization
-└── requirements.txt   # Project dependencies
-```
 
 ## Results
 
