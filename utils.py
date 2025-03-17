@@ -10,6 +10,17 @@ def load_data(dataset='fashion_mnist'):
         x_test  = x_test.reshape(-1,28*28)/255.0
 
         x_train, x_val, y_train, y_val = train_test_split(x_train_full, y_train_full, test_size = 0.1, random_state = 42)
+    elif dataset == 'mnist':
+            # Load MNIST dataset
+            (x_train_full, y_train_full), (x_test, y_test) = mnist.load_data()
+            # Normalize and reshape
+            x_train_full = x_train_full.reshape(-1,28*28)/255.0
+            x_test = x_test.reshape(-1,28*28)/255.0
+            
+            # Split training data into training and validation sets
+            x_train, x_val, y_train, y_val = train_test_split(x_train_full, y_train_full, test_size=0.1, random_state=42)
+    else:
+        raise ValueError(f"Unknown dataset: {dataset}. Supported datasets are 'mnist' and 'fashion_mnist'")
     return (x_train, y_train), (x_val, y_val), (x_test, y_test)
 
 def plot_samples_per_class(x_train, y_train):
