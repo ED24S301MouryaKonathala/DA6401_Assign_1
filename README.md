@@ -6,6 +6,18 @@
 
 This project implements a feedforward neural network for classifying Fashion MNIST images using various optimizers and architectures.
 
+## Project Structure
+
+```
+.
+├── model.py           # Neural network implementation
+├── optimizer.py       # Optimization algorithms
+├── train.py          # Training script
+├── utils.py          # Utility functions
+├── wandb_sweep.py    # Hyperparameter optimization
+└── requirements.txt   # Project dependencies
+```
+
 ## Setup
 
 1. Create a virtual environment:
@@ -111,18 +123,6 @@ Access visualizations in:
    - Model performance metrics
    - Confusion matrix
    - Sample predictions
-
-## Project Structure
-
-```
-.
-├── model.py           # Neural network implementation
-├── optimizer.py       # Optimization algorithms
-├── train.py          # Training script
-├── utils.py          # Utility functions
-├── wandb_sweep.py    # Hyperparameter optimization
-└── requirements.txt   # Project dependencies
-```
 
 ## Results
 
