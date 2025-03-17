@@ -36,6 +36,13 @@ wandb login
 
 ### Single Model Training
 
+Train a model with best parameters:
+
+```bash
+python train.py
+
+```
+
 Train a model with specific parameters:
 
 ```bash
